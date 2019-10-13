@@ -1,5 +1,6 @@
 from flask import Flask
 from flask import render_template, request, redirect, url_for
+from Point import *
 app = Flask(__name__)
 
 @app.route('/') # just run
@@ -15,6 +16,7 @@ def two():
 
 @app.route('/hello/<name>') # http://127.0.0.1:5000/hello/itay
 def hello_name(name):
+   # p = Point(2, 3) # you can import other python files
    return 'Hello %s!' % name
 
 
@@ -24,6 +26,10 @@ def show_blog(postID):
 @app.route('/rev/<float:revNo>') # http://127.0.0.1:5000/rev/1.5 - - one float parameter - into revNo arg
 def revision(revNo):
    return 'Revision Number %f' % revNo
+
+@app.route('/ynet')
+def ynet():
+   return redirect('https://www.ynet.co.il/home/0,7340,L-8,00.html')
 
 @app.route('/admin')
 def hello_admin():
@@ -78,8 +84,38 @@ def result():
 def index():
    return render_template("withjs.html")
 
+
+
+############################## FORM
+@app.route('/form1')
+def form11():
+   return render_template('form1.html') # change form1.html get/ post
+@app.route('/success/<name>')
+def success(name):
+   return 'welcome %s' % name
+@app.route('/log1',methods = ['POST', 'GET'])
+def login2():
+   if request.method == 'POST':
+      user = request.form['nm']
+      return redirect(url_for('success',name = user))
+   else:
+      user = request.args.get('nm')
+      return redirect(url_for('success',name = user))
+
+
+############################## FORM - another example
+@app.route('/student')
+def student():
+   return render_template('student.html')
+@app.route('/result2',methods = ['POST', 'GET'])
+def result2():
+   if request.method == 'POST':
+      result = request.form
+      return render_template("result.html",result = result)
+
 if __name__ == '__main__':
 
    app.add_url_rule('/two', 'two', two) # add route url - http://127.0.0.1:5000/two
    app.run()
+   # app.run(port=7777)
    #app.run(debug=True) # to stop in break points
