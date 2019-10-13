@@ -74,6 +74,10 @@ def result():
    dict = {'phy':50,'che':60,'maths':70}
    return render_template('result.html', result = dict)
 
+@app.route("/withjs")
+def index():
+   return render_template("withjs.html")
+
 if __name__ == '__main__':
 
    app.add_url_rule('/two', 'two', two) # add route url - http://127.0.0.1:5000/two
